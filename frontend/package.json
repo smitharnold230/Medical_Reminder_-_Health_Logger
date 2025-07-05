@@ -1,0 +1,53 @@
+{
+  "name": "healthtracker-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "axios": "^1.6.2",
+    "axios-retry": "^3.7.0",
+    "chart.js": "^4.4.1",
+    "date-fns": "^3.0.6",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "jwt-decode": "^4.0.0",
+    "loglevel": "^1.9.1",
+    "loglevel-plugin-remote": "^0.6.8",
+    "papaparse": "^5.4.1",
+    "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0",
+    "react-router-dom": "^6.21.1",
+    "react-scripts": "^5.0.1",
+    "recharts": "^2.10.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "lint": "eslint .",
+    "format": "prettier --write \"src/**/*.{js,jsx}\""
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.6",
+    "@babel/preset-env": "^7.23.6",
+    "@babel/preset-react": "^7.23.6",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.33.2",
+    "prettier": "^3.1.1"
+  }
+}

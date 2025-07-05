@@ -1,0 +1,33 @@
+{
+  "name": "healthtracker-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "cross-env NODE_ENV=development node server.js",
+    "logs:view": "node ../scripts/view-logs.js view",
+    "logs:errors": "node ../scripts/view-logs.js errors",
+    "logs:search": "node ../scripts/view-logs.js search",
+    "logs:stats": "node ../scripts/view-logs.js stats",
+    "logs:list": "node ../scripts/view-logs.js list",
+    "alerts:errors": "node ../scripts/error-alert.js",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "node-cron": "^3.0.3",
+    "pg": "^8.10.0",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1"
+  }
+}
