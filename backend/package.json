@@ -5,6 +5,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "cross-env NODE_ENV=development node server.js",
+    "setup-db": "node setup-database.js",
+    "test-db": "node test-db-connection.js",
     "logs:view": "node ../scripts/view-logs.js view",
     "logs:errors": "node ../scripts/view-logs.js errors",
     "logs:search": "node ../scripts/view-logs.js search",

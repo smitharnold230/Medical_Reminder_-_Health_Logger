@@ -3,13 +3,20 @@
 // In a real production app, you'd use a build-time configuration
 
 const loadConfig = () => {
-  // For development, we'll use the values from environment.env
-  // In production, these would be set during build time
+  // Check if we're in production (you can set this via environment variable during build)
+  const isProduction = process.env.NODE_ENV === 'production' || window.location.hostname !== 'localhost';
+  
+  // For development, use localhost
+  // For production, use your Render backend URL
+  const API_BASE_URL = isProduction 
+    ? 'https://your-backend-service-name.onrender.com/api'  // Replace with your actual Render backend URL
+    : 'http://localhost:5000/api';
+  
   return {
-    API_BASE_URL: 'http://localhost:5000/api',
-    ENVIRONMENT: 'development',
-    ENABLE_ANALYTICS: false,
-    ENABLE_DEBUG_MODE: true,
+    API_BASE_URL,
+    ENVIRONMENT: isProduction ? 'production' : 'development',
+    ENABLE_ANALYTICS: isProduction,
+    ENABLE_DEBUG_MODE: !isProduction,
     // Add any other configuration values here
   };
 };
