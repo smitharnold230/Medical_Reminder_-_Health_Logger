@@ -1,11 +1,12 @@
 import log from 'loglevel';
 import remote from 'loglevel-plugin-remote';
+import { config } from '../config';
 
 // Configure loglevel
 const safeProcess = typeof window !== 'undefined' && window.process ? window.process : { env: {} };
 const LOG_LEVEL = safeProcess.env.REACT_APP_LOG_LEVEL || 'info';
 const REMOTE_LOGGING_ENABLED = safeProcess.env.REACT_APP_REMOTE_LOGGING === 'true';
-const REMOTE_LOG_URL = safeProcess.env.REACT_APP_REMOTE_LOG_URL || 'http://localhost:5000/api/logs';
+const REMOTE_LOG_URL = safeProcess.env.REACT_APP_REMOTE_LOG_URL || `${config.API_BASE_URL}/logs`;
 
 // Set log level
 log.setLevel(LOG_LEVEL);

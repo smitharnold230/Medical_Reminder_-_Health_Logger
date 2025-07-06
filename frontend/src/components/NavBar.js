@@ -7,6 +7,7 @@ import HeartIcon from './HeartIcon';
 import PropTypes from 'prop-types';
 import { useTheme } from '../contexts/ThemeContext';
 import '../styles.css';
+import { config } from '../config';
 
 const NavBar = ({ user, onLogout }) => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const NavBar = ({ user, onLogout }) => {
     const fetchNotifications = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:5000/api/medication-reminders', {
+        const response = await fetch(`${config.API_BASE_URL}/medication-reminders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.ok) {

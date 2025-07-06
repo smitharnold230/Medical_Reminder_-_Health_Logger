@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import HeartIcon from './HeartIcon';
 import PropTypes from 'prop-types';
+import { config } from '../config';
 
 const Register = ({ onRegisterSuccess }) => {
   const [username, setUsername] = useState('');
@@ -34,7 +35,7 @@ const Register = ({ onRegisterSuccess }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/register', { username, email, password });
+      const response = await axios.post(`${config.API_BASE_URL}/register`, { username, email, password });
       onRegisterSuccess(response.data);
       navigate('/login'); // Redirect to login page after successful registration
     } catch (err) {

@@ -5,6 +5,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { FiDownload, FiActivity, FiCalendar, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import '../styles.css';
+import { config } from '../config';
 
 const HealthMetrics = (props) => {
   const [metrics, setMetrics] = useState([]);
@@ -31,7 +32,7 @@ const HealthMetrics = (props) => {
   const loadMetrics = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/health-metrics', {
+      const response = await fetch(`${config.API_BASE_URL}/health-metrics`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch health metrics');
@@ -78,7 +79,7 @@ const HealthMetrics = (props) => {
     }
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/health-metrics', {
+      const response = await fetch(`${config.API_BASE_URL}/health-metrics`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -110,7 +111,7 @@ const HealthMetrics = (props) => {
   const handleDeleteMetric = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await fetch(`http://localhost:5000/api/health-metrics/${id}`, {
+      await fetch(`${config.API_BASE_URL}/health-metrics/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -139,7 +140,7 @@ const HealthMetrics = (props) => {
     }
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/health-metrics/${id}`, {
+      const response = await fetch(`${config.API_BASE_URL}/health-metrics/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

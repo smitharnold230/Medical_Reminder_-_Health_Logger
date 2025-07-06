@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiPlus, FiTrash2, FiEdit, FiSave, FiX, FiCalendar, FiClock, FiMapPin } from 'react-icons/fi';
 import '../styles.css';
+import { config } from '../config';
 
 const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -24,7 +25,7 @@ const Appointments = () => {
   const loadAppointments = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/appointments', {
+      const response = await fetch(`${config.API_BASE_URL}/appointments`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Failed to fetch appointments');
@@ -58,7 +59,7 @@ const Appointments = () => {
     }
     try {
       const token = localStorage.getItem('token');
-      await fetch('http://localhost:5000/api/appointments', {
+      await fetch(`${config.API_BASE_URL}/appointments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +85,7 @@ const Appointments = () => {
   const handleDeleteAppointment = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await fetch(`http://localhost:5000/api/appointments/${id}`, {
+      await fetch(`${config.API_BASE_URL}/appointments/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -114,7 +115,7 @@ const Appointments = () => {
     }
     try {
       const token = localStorage.getItem('token');
-      await fetch(`http://localhost:5000/api/appointments/${id}`, {
+      await fetch(`${config.API_BASE_URL}/appointments/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

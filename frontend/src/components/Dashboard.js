@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import HealthMetricsTrend from './HealthMetricsTrend';
 import { isAfter, isBefore, isSameDay, parseISO } from 'date-fns';
+import { config } from '../config';
 
 // Icons
 import { FiPlus, FiCalendar, FiActivity, FiCheckCircle, FiClock, FiTrendingUp } from 'react-icons/fi';
@@ -55,7 +56,7 @@ const Dashboard = ({ user }) => {
     const medToUpdate = originalMedications.find(m => m.id === medId);
 
     try {
-      await fetch(`http://localhost:5000/api/medications/${medId}`, {
+      await fetch(`${config.API_BASE_URL}/medications/${medId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

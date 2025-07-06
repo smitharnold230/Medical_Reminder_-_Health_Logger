@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import HeartIcon from './HeartIcon';
 import PropTypes from 'prop-types';
+import { config } from '../config';
 
 const Login = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
@@ -23,7 +24,7 @@ const Login = ({ onLoginSuccess }) => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:5000/api/login', { email, password });
+      const response = await axios.post(`${config.API_BASE_URL}/login`, { email, password });
       onLoginSuccess(response.data.token);
       navigate('/'); // Redirect to main landing page after successful login
     } catch (err) {
