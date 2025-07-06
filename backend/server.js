@@ -49,6 +49,42 @@ app.use((req, res, next) => {
   next();
 });
 
+// Root endpoint for basic testing
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'MedHel Backend API is running!',
+    timestamp: new Date().toISOString(),
+    environment: NODE_ENV,
+    endpoints: {
+      health: '/api/health',
+      register: '/api/register',
+      login: '/api/login'
+    }
+  });
+});
+
+// Health check endpoint for deployment testing
+app.get('/api/health', async (req, res) => {
+  try {
+    // Test database connection
+    await db.query('SELECT 1 as test');
+    res.json({ 
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+      database: 'connected',
+      environment: NODE_ENV
+    });
+  } catch (error) {
+    logger.error('Health check failed:', error.message);
+    res.status(500).json({ 
+      status: 'unhealthy',
+      timestamp: new Date().toISOString(),
+      database: 'disconnected',
+      error: error.message
+    });
+  }
+});
+
 app.use('/api', authRoutes);
 app.use('/api', authenticateToken, profileRoutes);
 
