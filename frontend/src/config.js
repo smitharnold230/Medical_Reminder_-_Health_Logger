@@ -9,7 +9,7 @@ const loadConfig = () => {
   // For development, use localhost
   // For production, use your Render backend URL
   const API_BASE_URL = isProduction 
-    ? 'https://your-backend-service-name.onrender.com/api'  // Replace with your actual Render backend URL
+    ? 'https://medhel-backend.onrender.com/api'  // Your actual Render backend URL
     : 'http://localhost:5000/api';
   
   return {
