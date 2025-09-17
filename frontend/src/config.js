@@ -10,7 +10,7 @@ const loadConfig = () => {
   // For production, use your Render backend URL
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL ||
     (isProduction
-      ? 'https://medhel-backend.onrender.com/api'
+      ? 'https://medhel-backend-gtsr.onrender.com/api'
       : 'http://localhost:5000/api');
   
   return {
