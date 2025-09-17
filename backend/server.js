@@ -86,7 +86,7 @@ app.get('/api/health', async (req, res) => {
 });
 
 app.use('/api', authRoutes);
-app.use('/api', authenticateToken, profileRoutes);
+app.use('/api/profile', authenticateToken, profileRoutes);
 
 // Middleware to authenticate and extract user ID from token
 function authenticateToken(req, res, next) {
