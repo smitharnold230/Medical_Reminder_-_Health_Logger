@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // CORS configuration
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: ['https://medical-reminder-health-logger.vercel.app', 'http://localhost:3000'],
   credentials: true,
   optionsSuccessStatus: 200
 };
