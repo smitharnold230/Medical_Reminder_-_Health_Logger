@@ -9,7 +9,7 @@ if (process.env.DATABASE_URL) {
   // Use DATABASE_URL (Render format)
   poolConfig = {
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    ssl: { rejectUnauthorized: false }, // Always require SSL for cloud DBs
     // Add connection pooling configuration
     max: 20, // Maximum number of clients in the pool
     idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
