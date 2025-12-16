@@ -26,8 +26,12 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // CORS configuration
+const corsOrigins = process.env.CORS_ORIGIN 
+  ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
+  : ['https://medical-reminder-health-logger-27ue.vercel.app', 'http://localhost:3000'];
+
 const corsOptions = {
-  origin: ['https://medical-reminder-health-logger-27ue.vercel.app', 'http://localhost:3000'],
+  origin: corsOrigins,
   credentials: true,
   optionsSuccessStatus: 200
 };
@@ -188,7 +192,7 @@ app.get('/api/healthscore', authenticateToken, async (req, res) => {
     
     // Get medication adherence (last 7 days)
     const medsResult = await db.query(
-      'SELECT COUNT(*) as total, SUM(CASE WHEN taken THEN 1 ELSE 0 END) as taken FROM medications WHERE user_id = $1',
+      'SELECT COUNT(*) as total, COALESCE(SUM(CASE WHEN taken THEN 1 ELSE 0 END), 0) as taken FROM medications WHERE user_id = $1 AND medication_date >= CURRENT_DATE - INTERVAL \'7 days\'',
       [req.userId]
     );
     
@@ -869,12 +873,50 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Function to check if database tables exist
+async function checkAndInitializeDatabase() {
+  try {
+    logger.info('Checking database schema...');
+    
+    // Check if users table exists
+    const result = await db.query(`
+      SELECT EXISTS (
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_schema = 'public' 
+        AND table_name = 'users'
+      );
+    `);
+    
+    const tablesExist = result.rows[0].exists;
+    
+    if (!tablesExist) {
+      logger.warn('Database tables not found. Running setup script...');
+      const setupDatabase = require('./setup-database');
+      await setupDatabase.run();
+      logger.info('✅ Database initialization completed');
+    } else {
+      logger.info('✅ Database tables already exist');
+    }
+  } catch (error) {
+    logger.error('Failed to initialize database:', error.message);
+    throw error;
+  }
+}
+
 if (require.main === module) {
-  app.listen(PORT, () => {
-    logger.info(`Health Management API server is running on port ${PORT}`);
-    logger.info(`Environment: ${NODE_ENV}`);
-    logger.info(`CORS Origin: ${process.env.CORS_ORIGIN || 'http://localhost:3000'}`);
-  });
+  // Initialize database before starting server
+  checkAndInitializeDatabase()
+    .then(() => {
+      app.listen(PORT, () => {
+        logger.info(`Health Management API server is running on port ${PORT}`);
+        logger.info(`Environment: ${NODE_ENV}`);
+        logger.info(`CORS Origin: ${process.env.CORS_ORIGIN || 'http://localhost:3000'}`);
+      });
+    })
+    .catch((error) => {
+      logger.error('Failed to start server:', error.message);
+      process.exit(1);
+    });
 }
 
 module.exports = app;

@@ -7,10 +7,10 @@ const loadConfig = () => {
   const isProduction = process.env.NODE_ENV === 'production' || window.location.hostname !== 'localhost';
   
   // For development, use localhost
-  // For production, use your Render backend URL
+  // For production, use Render backend URL configured via REACT_APP_API_BASE_URL
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL ||
     (isProduction
-      ? 'https://medical-reminder-health-logger-306x.onrender.com/api'
+      ? 'https://medical-reminder-backend.onrender.com/api'  // Update with your actual Render URL
       : 'http://localhost:5000/api');
   
   return {

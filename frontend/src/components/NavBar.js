@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { FiUser, FiSun, FiMoon } from 'react-icons/fi';
+import { FiUser, FiSun, FiMoon, FiMenu, FiX } from 'react-icons/fi';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import HeartIcon from './HeartIcon';
@@ -12,13 +12,16 @@ import { config } from '../config';
 const NavBar = ({ user, onLogout }) => {
   const navigate = useNavigate();
   const [profileOpen, setProfileOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const profileRef = useRef();
+  const menuRef = useRef();
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const { isDarkMode, toggleTheme } = useTheme();
 
   const handleLogout = () => {
     onLogout();
+    setMenuOpen(false);
     navigate('/login');
   };
 
@@ -28,16 +31,15 @@ const NavBar = ({ user, onLogout }) => {
       if (profileRef.current && !profileRef.current.contains(event.target)) {
         setProfileOpen(false);
       }
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
     }
-    if (profileOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [profileOpen]);
+  }, []);
 
   useEffect(() => {
     // Fetch upcoming medication notifications
@@ -68,6 +70,7 @@ const NavBar = ({ user, onLogout }) => {
       
       {user ? (
         <>
+          {/* Desktop Menu */}
           <nav className="navbar-nav" role="menubar">
             <NavLink 
               to="/" 
@@ -109,8 +112,59 @@ const NavBar = ({ user, onLogout }) => {
             >
               History
             </NavLink>
-            {/* Removed Profile tab from navbar as per user request */}
           </nav>
+
+          {/* Mobile Hamburger Menu */}
+          <div className="navbar-menu-toggle" ref={menuRef}>
+            <button 
+              className="hamburger-btn"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle navigation menu"
+              aria-expanded={menuOpen}
+            >
+              {menuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+            </button>
+            {menuOpen && (
+              <nav className="mobile-nav-menu">
+                <NavLink 
+                  to="/" 
+                  className={({ isActive }) => "mobile-nav-link" + (isActive ? " active" : "")}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Dashboard
+                </NavLink>
+                <NavLink 
+                  to="/medications" 
+                  className={({ isActive }) => "mobile-nav-link" + (isActive ? " active" : "")}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Medications
+                </NavLink>
+                <NavLink 
+                  to="/healthmetrics" 
+                  className={({ isActive }) => "mobile-nav-link" + (isActive ? " active" : "")}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Health Metrics
+                </NavLink>
+                <NavLink 
+                  to="/appointments" 
+                  className={({ isActive }) => "mobile-nav-link" + (isActive ? " active" : "")}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Appointments
+                </NavLink>
+                <NavLink 
+                  to="/history" 
+                  className={({ isActive }) => "mobile-nav-link" + (isActive ? " active" : "")}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  History
+                </NavLink>
+              </nav>
+            )}
+          </div>
+
           <div className="header-actions">
             <button 
               className="theme-toggle" 
@@ -154,21 +208,14 @@ const NavBar = ({ user, onLogout }) => {
               </button>
               {profileOpen && (
                 <div className="profile-dropdown">
-              {/* Replace Profile button with rendering Profile component */}
-              {/* Removed Profile button to replace with Profile component */}
-              <button className="profile-dropdown-item" onClick={handleLogout}>Logout</button>
-            </div>
-          )}
-          {profileOpen && (
-            <div className="profile-dropdown">
-              <button className="profile-dropdown-item" onClick={() => { setProfileOpen(false); navigate('/profile'); }}>
-                Profile
-              </button>
-              <button className="profile-dropdown-item" onClick={handleLogout}>
-                Logout
-              </button>
-            </div>
-          )}
+                  <button className="profile-dropdown-item" onClick={() => { setProfileOpen(false); navigate('/profile'); }}>
+                    Profile
+                  </button>
+                  <button className="profile-dropdown-item" onClick={handleLogout}>
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </>

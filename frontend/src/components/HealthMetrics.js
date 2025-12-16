@@ -7,6 +7,22 @@ import { FiDownload, FiActivity, FiCalendar, FiEdit2, FiTrash2 } from 'react-ico
 import '../styles.css';
 import { config } from '../config';
 
+// Predefined metric types with their common units
+const METRIC_TYPES = {
+  'Weight': ['kg', 'lbs'],
+  'Blood Pressure': ['mmHg'],
+  'Heart Rate': ['bpm'],
+  'Temperature': ['°C', '°F'],
+  'Glucose': ['mg/dL', 'mmol/L'],
+  'Cholesterol': ['mg/dL', 'mmol/L'],
+  'BMI': ['kg/m²'],
+  'SpO2': ['%'],
+  'Sleep Duration': ['hours', 'minutes'],
+  'Water Intake': ['ml', 'liters', 'cups'],
+  'Steps': ['count'],
+  'Calories': ['kcal'],
+};
+
 const HealthMetrics = (props) => {
   const [metrics, setMetrics] = useState([]);
   const [filteredMetrics, setFilteredMetrics] = useState([]);
@@ -243,13 +259,22 @@ const HealthMetrics = (props) => {
       <div className="add-metric-section">
         <h2>Add New Health Metric</h2>
         <div className="add-metric-form">
-          <input
-            type="text"
-            placeholder="Metric type (e.g., Weight, Blood Pressure)"
+          <select
             value={newMetricType}
-            onChange={(e) => setNewMetricType(e.target.value)}
+            onChange={(e) => {
+              setNewMetricType(e.target.value);
+              // Auto-set unit to first option when metric type changes
+              if (e.target.value && METRIC_TYPES[e.target.value]) {
+                setNewMetricUnit(METRIC_TYPES[e.target.value][0]);
+              }
+            }}
             className="form-input"
-          />
+          >
+            <option value="">Select Metric Type</option>
+            {Object.keys(METRIC_TYPES).map(type => (
+              <option key={type} value={type}>{type}</option>
+            ))}
+          </select>
           <input
             type="number"
             step="0.1"
@@ -259,13 +284,19 @@ const HealthMetrics = (props) => {
             className="form-input"
             required
           />
-          <input
-            type="text"
-            placeholder="Unit (e.g., kg, mmHg)"
+          <select
             value={newMetricUnit}
             onChange={(e) => setNewMetricUnit(e.target.value)}
             className="form-input"
-          />
+            disabled={!newMetricType}
+          >
+            <option value="">Select Unit</option>
+            {newMetricType && METRIC_TYPES[newMetricType] && 
+              METRIC_TYPES[newMetricType].map(unit => (
+                <option key={unit} value={unit}>{unit}</option>
+              ))
+            }
+          </select>
           <input
             type="date"
             value={newMetricDate}
@@ -289,12 +320,21 @@ const HealthMetrics = (props) => {
                 <div className="item-card-edit-controls">
                   <div className="edit-form-group">
                     <label>Type</label>
-                    <input
-                      type="text"
+                    <select
                       value={editingType}
-                      onChange={(e) => setEditingType(e.target.value)}
-                      placeholder="Blood Pressure, Weight, etc."
-                    />
+                      onChange={(e) => {
+                        setEditingType(e.target.value);
+                        // Auto-set unit to first option when metric type changes
+                        if (e.target.value && METRIC_TYPES[e.target.value]) {
+                          setEditingUnit(METRIC_TYPES[e.target.value][0]);
+                        }
+                      }}
+                    >
+                      <option value="">Select Metric Type</option>
+                      {Object.keys(METRIC_TYPES).map(type => (
+                        <option key={type} value={type}>{type}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="edit-form-row">
                     <div className="edit-form-group">
@@ -309,12 +349,18 @@ const HealthMetrics = (props) => {
                     </div>
                     <div className="edit-form-group">
                       <label>Unit</label>
-                      <input
-                        type="text"
+                      <select
                         value={editingUnit}
                         onChange={(e) => setEditingUnit(e.target.value)}
-                        placeholder="mmHg, kg, etc."
-                      />
+                        disabled={!editingType}
+                      >
+                        <option value="">Select Unit</option>
+                        {editingType && METRIC_TYPES[editingType] && 
+                          METRIC_TYPES[editingType].map(unit => (
+                            <option key={unit} value={unit}>{unit}</option>
+                          ))
+                        }
+                      </select>
                     </div>
                   </div>
                   <div className="edit-form-group">

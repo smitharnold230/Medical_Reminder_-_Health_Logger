@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: medical-reminder-backend
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: medical_reminder_db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRY
+        value: "24h"
+      - key: PORT
+        value: 5000
+      - key: CORS_ORIGIN
+        value: "https://your-vercel-frontend.vercel.app"
+
+databases:
+  - name: medical_reminder_db
+    ipAllowList: []
+    region: singapore
+    plan: free
