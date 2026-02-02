@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // CORS configuration
 const corsOrigins = process.env.CORS_ORIGIN 
   ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
-  : ['https://medical-reminder-health-logger-27ue.vercel.app', 'http://localhost:3000'];
+  : ['https://medical-reminder-health-logger-5qad-391ayzy5t.vercel.app/','https://mhs.codes' 'http://localhost:3000'];
 
 const corsOptions = {
   origin: corsOrigins,
